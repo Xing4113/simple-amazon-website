@@ -1,5 +1,5 @@
 import { products} from '../data/products.js';
-import { carts, addToCart } from '../data/carts.js';
+import { carts, addToCart, formatPrice } from '../data/carts.js';
 
 let htmlCreator = "";
 
@@ -26,7 +26,7 @@ products.forEach(products => {
                 />
                 <div class="product-rating-count">${products.rating.count}</div>
             </div>
-            <div class="product-price">$${(products.priceCents / 100).toFixed(2)}</div>
+            <div class="product-price">$${formatPrice(products.priceCents)}</div>
             <div class="product-quantity-container" >
                 <select class = "js-quantity-selector-${products.id}">
                 <option value="1">1</option>
