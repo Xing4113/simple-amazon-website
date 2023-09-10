@@ -1,4 +1,4 @@
-export const carts = [
+export let carts = [
     {
         productID : "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",
         quantity : 1
@@ -32,6 +32,13 @@ export function addToCart(productID) {
     }
 }
 
-export function formatPrice(priceCents){
-    return (priceCents / 100).toFixed(2);
+export function deleteCart(productId){
+    let newCarts = [];
+    carts.forEach(cart => {
+        if(cart.productID !== productId){
+            newCarts.push(cart);
+        }
+    });
+
+    carts = newCarts;
 }

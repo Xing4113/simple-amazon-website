@@ -1,6 +1,6 @@
-import { products} from '../data/products.js';
-import { carts, addToCart, formatPrice } from '../data/carts.js';
-
+import { products } from '../data/products.js';
+import { carts, addToCart } from '../data/carts.js';
+import { formatPrice } from "../jsCode/utils/money.js";
 let htmlCreator = "";
 
 products.forEach(products => {
