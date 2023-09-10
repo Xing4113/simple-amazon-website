@@ -1,12 +1,11 @@
 import { products } from '../data/products.js';
+import { carts } from '../data/carts.js';
 
 let htmlCreator = "";
 
-products.forEach( products => {
+products.forEach(products => {
 
-    console.log(products.image);
-
-         htmlCreator += `
+    htmlCreator += `
         
             <div class="product-container">
             <div class="product-image-container">
@@ -28,9 +27,9 @@ products.forEach( products => {
                 <div class="product-rating-count">${products.rating.count}</div>
             </div>
             <div class="product-price">$${(products.priceCents / 100).toFixed(2)}</div>
-            <div class="product-quantity-container">
-                <select>
-                <option selected value="1">1</option>
+            <div class="product-quantity-container" >
+                <select class = "js-quantity-selector-${products.id}">
+                <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
@@ -48,11 +47,42 @@ products.forEach( products => {
                 <img src="/images/icons/checkmark.png" />
                 Added
             </div>
-            <button class="add-to-cart-button button-primary">Add to Cart</button>
+            <button class="add-to-cart-button button-primary js-add-to-cart-btn" data-product-id = "${products.id}" >Add to Cart</button>
             </div>
         `;
 
-        document.querySelector(".js-products-grid").innerHTML = htmlCreator;
-    }
+    document.querySelector(".js-products-grid").innerHTML = htmlCreator;
+}
 );
+
+const addToCart = document.querySelectorAll(".js-add-to-cart-btn");
+
+addToCart.forEach(button => {
+
+    button.addEventListener("click", (event) => {
+        const productID = button.dataset.productId;
+        const quantity = document.querySelector(".js-quantity-selector-" + productID).value;
+
+        let matchingItem;
+
+        carts.forEach(cartItem => {
+            if (cartItem.productID === productID) {
+                matchingItem = cartItem;
+            }
+        });
+
+        if (matchingItem) {
+            matchingItem.quantity = Number(matchingItem.quantity) + Number(quantity);
+        } else {
+            carts.push({
+                productID: productID,
+                quantity: quantity
+            });
+        }
+
+        console.log(carts);
+    });
+
+});
+
 
