@@ -77,3 +77,11 @@ export const updateQuantity = (newQuantity, productID) => {
 
     saveToStorage();
 }
+
+export const updateShippingFee = (productID, selectedFee) => {
+    carts.forEach((cart) => {
+        if (cart.productID === productID) {
+            cart.shippingFee = selectedFee;
+        }
+    });
+}

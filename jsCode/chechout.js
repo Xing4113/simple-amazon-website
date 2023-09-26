@@ -1,4 +1,4 @@
-import { carts, deleteCart, calculateCartItems, updateQuantity } from "../data/carts.js";
+import { carts, deleteCart, calculateCartItems, updateQuantity, updateShippingFee } from "../data/carts.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
 import { updateSummary } from "../data/orderSummary.js"
@@ -165,11 +165,7 @@ document.querySelectorAll(".delivery-option-input").forEach((option) => {
 
     const productID = option.dataset.productId;
     const selectedFee = Number(option.dataset.shippingFee);
-    carts.forEach((cart) => {
-      if (cart.productID === productID) {
-        cart.shippingFee = selectedFee;
-      }
-    });
+    updateShippingFee(productID, selectedFee);
     updateSummary();
   });
 });
