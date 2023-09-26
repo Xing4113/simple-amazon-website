@@ -1,6 +1,7 @@
 import { carts, deleteCart, calculateCartItems, updateQuantity } from "../data/carts.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
+import { updateSummary } from "../data/orderSummary.js"
 let htmlCreator = "";
 
 updateCartItems();
@@ -58,7 +59,7 @@ carts.forEach(cart => {
         <div class="delivery-option">
           <input type="radio" checked
             class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
+            name="delivery-option-${matchingProduct.id}" data-shipping-fee="${0}" data-product-id="${matchingProduct.id}">
           <div>
             <div class="delivery-option-date">
               Tuesday, June 21
@@ -72,7 +73,7 @@ carts.forEach(cart => {
         <div class="delivery-option">
           <input type="radio"
             class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
+            name="delivery-option-${matchingProduct.id}" data-shipping-fee = "${499}" data-product-id="${matchingProduct.id}">
           <div>
             <div class="delivery-option-date">
               Wednesday, June 15
@@ -85,7 +86,7 @@ carts.forEach(cart => {
         <div class="delivery-option">
           <input type="radio"
             class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}">
+            name="delivery-option-${matchingProduct.id}" data-shipping-fee = "${999}" data-product-id="${matchingProduct.id}">
           <div>
             <div class="delivery-option-date">
               Monday, June 13
@@ -102,6 +103,7 @@ carts.forEach(cart => {
   `
 
   document.querySelector(".order-summary").innerHTML = htmlCreator;
+  updateSummary();
 });
 
 
@@ -116,6 +118,7 @@ deleteBtns.forEach(deleteBtn => {
     const container = document.querySelector(`.js-cart-item-container-${productID}`);
     container.remove();
     updateCartItems();
+    updateSummary();
   });
 });
 
@@ -150,5 +153,25 @@ document.querySelectorAll(".save-link").forEach((saveLink) => {
     quantityLabel.innerHTML = newQuantity;
 
     updateQuantity(newQuantity, productID);
+    updateCartItems();
+    updateSummary();
   })
 });
+
+
+
+document.querySelectorAll(".delivery-option-input").forEach((option) => {
+  option.addEventListener("click", () => {
+
+    const productID = option.dataset.productId;
+    const selectedFee = Number(option.dataset.shippingFee);
+    carts.forEach((cart) => {
+      if (cart.productID === productID) {
+        cart.shippingFee = selectedFee;
+      }
+    });
+    updateSummary();
+  });
+});
+
+
