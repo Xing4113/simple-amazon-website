@@ -1,7 +1,7 @@
 import { orderDetails } from "../data/orderDetail.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
-import { updateCartQuantity } from "../data/carts.js"
+import { updateCartQuantity, addToCart } from "../data/carts.js"
 
 updateCartQuantity();
 
@@ -12,7 +12,6 @@ orderDetails.forEach((orderDetail) => {
 
     let orderContainer = "";
     let productContainer = "";
-
 
     products.forEach((product) => {
         orderDetail.products.forEach((orderedProduct) => {
@@ -28,14 +27,14 @@ orderDetails.forEach((orderDetail) => {
                     </div>
                     <div class="product-delivery-date">Arriving on: ${orderedProduct.arrivingDate}</div>
                     <div class="product-quantity">Quantity: ${orderedProduct.quantity}</div>
-                    <button class="buy-again-button button-primary">
+                    <button class="buy-again-button button-primary" data-product-id = "${orderedProduct.id}" data-quantity="${orderedProduct.quantity}">
                         <img class="buy-again-icon" src="images/icons/buy-again.png" />
                         <span class="buy-again-message">Buy it again</span>
                     </button>
                 </div>
 
                 <div class="product-actions">
-                    <a href="tracking.html">
+                    <a href="tracking.html?orderID=${orderDetail.orderID}&productID=${orderedProduct.id}">
                         <button class="track-package-button button-secondary">
                             Track package
                         </button>
@@ -78,3 +77,14 @@ orderDetails.forEach((orderDetail) => {
 });
 
 
+document.querySelectorAll(".buy-again-button").forEach((buyAgainBtn) => {
+    buyAgainBtn.addEventListener("click", () => {
+        const productID = buyAgainBtn.dataset.productId;
+        let quantity = buyAgainBtn.dataset.quantity;
+        quantity = Number(quantity);
+
+        addToCart(productID, quantity);
+        updateCartQuantity();
+        alert("Added To Your Cart!");
+    });
+});
