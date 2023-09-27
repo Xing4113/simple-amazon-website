@@ -2,17 +2,14 @@ import { orderDetails } from "../data/orderDetail.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
 import { updateCartQuantity } from "../data/carts.js"
-import { getDate } from "./utils/date.js";
 
 updateCartQuantity();
 
-console.log(orderDetails);
 
 let htmlCreator = "";
 
 orderDetails.forEach((orderDetail) => {
 
-    console.log(orderDetail);
     let orderContainer = "";
     let productContainer = "";
 

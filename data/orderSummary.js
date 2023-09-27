@@ -1,7 +1,7 @@
-import { carts, calculateCartItems } from "../data/carts.js";
+import { carts, calculateCartItems, clearCarts, updateHeaderCartItems } from "../data/carts.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
-
+import { orderDetails, updateOrderDetail } from "../data/orderDetail.js";
 
 function calculateShippingFee() {
   let totalShippingFee = 0;
@@ -13,7 +13,7 @@ function calculateShippingFee() {
   return totalShippingFee;
 }
 
-function orderSummary() {
+export function orderSummary() {
 
   const totalShippingFee = calculateShippingFee();
   let subTotal = 0;
@@ -72,4 +72,19 @@ export function updateSummary() {
               Place your order
             </button>
     `
+
+  document.querySelector(".js-place-order-button").addEventListener("click", () => {
+
+    if (carts.length !== 0) {
+      updateOrderDetail();
+      clearCarts();
+
+      const container = document.querySelector(`.order-summary`);
+      container.remove();
+      updateSummary();
+      updateHeaderCartItems();
+      
+    }
+
+  });
 }

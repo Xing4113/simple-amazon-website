@@ -1,10 +1,13 @@
-import { carts, deleteCart, calculateCartItems, updateQuantity, updateShippingFee } from "../data/carts.js";
+import { carts, deleteCart, updateHeaderCartItems, updateQuantity, updateShippingFee, updateDeliveryDate, cartUpToDate } from "../data/carts.js";
 import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
 import { updateSummary } from "../data/orderSummary.js"
+import { getDate } from "./utils/date.js";
 let htmlCreator = "";
 
-updateCartItems();
+updateHeaderCartItems();
+updateSummary();
+cartUpToDate();
 
 carts.forEach(cart => {
 
@@ -19,8 +22,8 @@ carts.forEach(cart => {
   htmlCreator += `
     
     <div class="cart-item-container js-cart-item-container-${matchingProduct.id}">
-    <div class="delivery-date">
-      Delivery date: Tuesday, June 21
+    <div class="delivery-date js-delivery-date-${matchingProduct.id}">
+      Delivery date: ${cart.deliveryDate}
     </div>
 
     <div class="cart-item-details-grid">
@@ -59,10 +62,10 @@ carts.forEach(cart => {
         <div class="delivery-option">
           <input type="radio" checked
             class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}" data-shipping-fee="${0}" data-product-id="${matchingProduct.id}">
+            name="delivery-option-${matchingProduct.id}" data-shipping-fee="${0}" data-product-id="${matchingProduct.id}" data-delivery-date="${getDate(7)}">
           <div>
             <div class="delivery-option-date">
-              Tuesday, June 21
+              ${getDate(7)}
             </div>
             <div class="delivery-option-price">
               FREE Shipping
@@ -73,10 +76,10 @@ carts.forEach(cart => {
         <div class="delivery-option">
           <input type="radio"
             class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}" data-shipping-fee = "${499}" data-product-id="${matchingProduct.id}">
+            name="delivery-option-${matchingProduct.id}" data-shipping-fee = "${499}" data-product-id="${matchingProduct.id}" data-delivery-date="${getDate(4)}">
           <div>
             <div class="delivery-option-date">
-              Wednesday, June 15
+              ${getDate(4)}
             </div>
             <div class="delivery-option-price">
               $4.99 - Shipping
@@ -86,10 +89,10 @@ carts.forEach(cart => {
         <div class="delivery-option">
           <input type="radio"
             class="delivery-option-input"
-            name="delivery-option-${matchingProduct.id}" data-shipping-fee = "${999}" data-product-id="${matchingProduct.id}">
+            name="delivery-option-${matchingProduct.id}" data-shipping-fee = "${999}" data-product-id="${matchingProduct.id}" data-delivery-date="${getDate(2)}">
           <div>
             <div class="delivery-option-date">
-              Monday, June 13
+              ${getDate(2)}
             </div>
             <div class="delivery-option-price">
               $9.99 - Shipping
@@ -117,15 +120,12 @@ deleteBtns.forEach(deleteBtn => {
 
     const container = document.querySelector(`.js-cart-item-container-${productID}`);
     container.remove();
-    updateCartItems();
+    updateHeaderCartItems();
     updateSummary();
   });
 });
 
-function updateCartItems() {
-  const quantity = calculateCartItems();
-  document.querySelector(".cart-items").innerHTML = `${quantity} items`
-}
+
 
 
 document.querySelectorAll(".update-quantity-link").forEach((updateLink) => {
@@ -137,6 +137,7 @@ document.querySelectorAll(".update-quantity-link").forEach((updateLink) => {
 
     container.classList.add("is-editing-quantity");
   });
+
 });
 
 document.querySelectorAll(".save-link").forEach((saveLink) => {
@@ -153,11 +154,10 @@ document.querySelectorAll(".save-link").forEach((saveLink) => {
     quantityLabel.innerHTML = newQuantity;
 
     updateQuantity(newQuantity, productID);
-    updateCartItems();
+    updateHeaderCartItems();
     updateSummary();
   })
 });
-
 
 
 document.querySelectorAll(".delivery-option-input").forEach((option) => {
@@ -165,14 +165,11 @@ document.querySelectorAll(".delivery-option-input").forEach((option) => {
 
     const productID = option.dataset.productId;
     const selectedFee = Number(option.dataset.shippingFee);
+    const deliveryDate = option.dataset.deliveryDate;
     updateShippingFee(productID, selectedFee);
+    updateDeliveryDate(productID, deliveryDate);
     updateSummary();
   });
 });
 
 
-document.querySelector(".js-place-order-button").addEventListener("click", () => {
-  
-  
-
-});

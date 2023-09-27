@@ -1,13 +1,16 @@
 
 
-export function getDate() {
-    let objectDate = new Date();
 
+export function getDate(days) {
+
+
+    let objectDate = new Date();
+    objectDate.setDate(objectDate.getDate() + days);
 
     let day = objectDate.getDate();
     let month = objectDate.getMonth() + 1;
     let year = objectDate.getFullYear();
-    
+
     if (day < 10) {
         day = '0' + day;
     }
@@ -16,5 +19,9 @@ export function getDate() {
         month = `0${month}`;
     }
 
-    return `${month}/${day}/${year}`;
+    const dayOfWeekName = objectDate.toLocaleString(
+        'default', { weekday: 'long' }
+    );
+
+    return `${dayOfWeekName}, ${day}/${month}/${year}`;
 }
