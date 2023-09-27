@@ -68,7 +68,7 @@ export function updateSummary() {
               <div class="payment-summary-money">$${formatPrice(summary.orderTotal)}</div>
             </div>
   
-            <button class="place-order-button button-primary">
+            <button class="place-order-button button-primary js-place-order-button">
               Place your order
             </button>
     `

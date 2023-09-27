@@ -171,3 +171,8 @@ document.querySelectorAll(".delivery-option-input").forEach((option) => {
 });
 
 
+document.querySelector(".js-place-order-button").addEventListener("click", () => {
+  
+  
+
+});

@@ -85,3 +85,8 @@ export const updateShippingFee = (productID, selectedFee) => {
         }
     });
 }
+
+export function updateCartQuantity() {
+    const quantity = calculateCartItems();
+    document.querySelector(".js-cart-quantity").innerHTML = quantity === 0 ? "" : quantity;
+}

@@ -1,5 +1,5 @@
 import { products } from '../data/products.js';
-import { addToCart, calculateCartItems } from '../data/carts.js';
+import { addToCart, updateCartQuantity } from '../data/carts.js';
 import { formatPrice } from "../jsCode/utils/money.js";
 let htmlCreator = "";
 
@@ -60,10 +60,7 @@ products.forEach(products => {
 
 const addToCarts = document.querySelectorAll(".js-add-to-cart-btn");
 
-function updateCartQuantity() {
-    const quantity = calculateCartItems();
-    document.querySelector(".js-cart-quantity").innerHTML = quantity === 0 ? "" : quantity;
-}
+
 
 addToCarts.forEach(button => {
 
