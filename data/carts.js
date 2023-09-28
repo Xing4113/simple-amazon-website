@@ -70,13 +70,22 @@ export const calculateCartItems = () => {
     return quantity;
 }
 
-export const updateQuantity = (newQuantity, productID) => {
+export const updateQuantity = (productID) => {
+
+    const quantityInput = document.querySelector(`.quantity-input-${productID}`);
+    const newQuantity = Number(quantityInput.value);
+
+    const quantityLabel = document.querySelector(`.quantity-label-${productID}`);
+    quantityLabel.innerHTML = newQuantity;
 
     carts.forEach((cartItem) => {
         if (productID === cartItem.productID) {
             cartItem.quantity = newQuantity;
         }
     });
+
+    const container = document.querySelector(`.js-cart-item-container-${productID}`);
+    container.classList.remove("is-editing-quantity");
 
     saveToStorage();
 }

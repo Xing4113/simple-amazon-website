@@ -69,3 +69,44 @@ export function updateOrderDetail() {
 
     saveToStorage();
 }
+
+function deleteOrderDetail(orderID) {
+    let tempOrderDetails = [];
+
+    orderDetails.forEach((orderDetail) => {
+        if (orderDetail.orderID !== orderID) {
+            tempOrderDetails.push(orderDetail);
+        }
+    });
+
+    orderDetails = tempOrderDetails;
+}
+
+export const cancelOrder = (orderID, productID) => {
+
+    let tempProducts = [];
+
+    orderDetails.forEach((orderDetail) => {
+        if (orderDetail.orderID === orderID) {
+
+            orderDetail.products.forEach((product) => {
+                if (product.id !== productID) {
+                    tempProducts.push(product);
+                }
+            });
+
+            orderDetail.products = tempProducts;
+            document.querySelector(`.js-${orderID}-${productID}`).remove();
+
+            if (orderDetail.products.length === 0) {
+                deleteOrderDetail(orderID);
+                document.querySelector(`.js-order-container-${orderID}`).remove();
+            }
+
+        }
+    });
+
+    saveToStorage();
+
+    alert("Order Canceled!!");
+}

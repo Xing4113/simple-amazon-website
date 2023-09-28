@@ -80,10 +80,11 @@ export function updateSummary() {
       clearCarts();
 
       const container = document.querySelector(`.order-summary`);
-      container.remove();
+      container.innerHTML = '';
       updateSummary();
       updateHeaderCartItems();
-      
+
+      alert("Payment Successful! Your Order have been placed.");
     }
 
   });

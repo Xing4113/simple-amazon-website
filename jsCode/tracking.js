@@ -1,8 +1,10 @@
 import { orderDetails } from "../data/orderDetail.js";
 import { products } from "../data/products.js";
 import { updateCartQuantity } from "../data/carts.js";
+import { searchFunction } from "./utils/searchFunction.js";
 
 updateCartQuantity();
+searchFunction();
 
 const urlParams = new URLSearchParams(window.location.search);
 
@@ -12,21 +14,21 @@ const productID = urlParams.get("productID");
 let matchingOrder;
 
 orderDetails.forEach(orderDetail => {
-    if (orderDetail.orderID === orderID) {
-        orderDetail.products.forEach((product) => {
-            if (product.id === productID) {
-                matchingOrder = product;
-            }
-        });
-    }
+  if (orderDetail.orderID === orderID) {
+    orderDetail.products.forEach((product) => {
+      if (product.id === productID) {
+        matchingOrder = product;
+      }
+    });
+  }
 });
 
 let matchingItem;
 
 products.forEach((product) => {
-    if (product.id === matchingOrder.id) {
-        matchingItem = product;
-    }
+  if (product.id === matchingOrder.id) {
+    matchingItem = product;
+  }
 });
 
 document.querySelector(".order-tracking").innerHTML = `

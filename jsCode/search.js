@@ -5,35 +5,44 @@ import { searchFunction } from "./utils/searchFunction.js";
 
 let htmlCreator = "";
 
-updateCartQuantity();
+const urlParams = new URLSearchParams(window.location.search);
+const inputText = urlParams.get("inputText").toUpperCase();
+
 searchFunction();
+updateCartQuantity();
 
-products.forEach(products => {
+products.forEach(product => {
 
-    htmlCreator += `
-        
+    let matchingItem;
+
+    if (product.name.toUpperCase().includes(inputText)) {
+        matchingItem = product;
+    }
+
+    if (matchingItem) {
+        htmlCreator += `
             <div class="product-container">
             <div class="product-image-container">
                 <img
                 class="product-image"
-                src="${products.image}"
+                src="${matchingItem.image}"
                 alt=""
                 />
             </div>
             <div class="product-name limit-text-to-2-lines">
-                ${products.name}
+                ${matchingItem.name}
             </div>
             <div class="product-rating-container">
                 <img
                 class="product-rating-stars"
-                src="/images/ratings/rating-${products.rating.stars * 10}.png"
+                src="/images/ratings/rating-${matchingItem.rating.stars * 10}.png"
                 alt=""
                 />
-                <div class="product-rating-count">${products.rating.count}</div>
+                <div class="product-rating-count">${matchingItem.rating.count}</div>
             </div>
-            <div class="product-price">$${formatPrice(products.priceCents)}</div>
+            <div class="product-price">$${formatPrice(matchingItem.priceCents)}</div>
             <div class="product-quantity-container" >
-                <select class = "js-quantity-selector-${products.id}">
+                <select class = "js-quantity-selector-${matchingItem.id}">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -48,15 +57,18 @@ products.forEach(products => {
             </div>
 
             <div class="product-spacer"></div>
-            <div class="added-to-cart js-added-to-cart-${products.id}">
+            <div class="added-to-cart js-added-to-cart-${matchingItem.id}">
                 <img src="/images/icons/checkmark.png" />
                 Added
             </div>
-            <button class="add-to-cart-button button-primary js-add-to-cart-btn" data-product-id = "${products.id}" >Add to Cart</button>
+            <button class="add-to-cart-button button-primary js-add-to-cart-btn" data-product-id = "${matchingItem.id}" >Add to Cart</button>
             </div>
         `;
 
-    document.querySelector(".js-products-grid").innerHTML = htmlCreator;
+        document.querySelector(".js-products-grid").innerHTML = htmlCreator;
+
+    }
+
 
 }
 );
@@ -69,6 +81,7 @@ addToCarts.forEach(button => {
 
         const productID = button.dataset.productId;
         let quantity = document.querySelector(".js-quantity-selector-" + productID).value;
+
         quantity = Number(quantity);
 
         addedIcon(productID);

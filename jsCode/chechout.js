@@ -3,6 +3,7 @@ import { products } from "../data/products.js";
 import { formatPrice } from "../jsCode/utils/money.js";
 import { updateSummary } from "../data/orderSummary.js"
 import { getDate } from "./utils/date.js";
+
 let htmlCreator = "";
 
 updateHeaderCartItems();
@@ -46,7 +47,7 @@ carts.forEach(cart => {
             Update
           </span>
          
-          <input class="quantity-input quantity-input-${matchingProduct.id}" type="number" min="1" value="${cart.quantity}"/>
+          <input class="quantity-input quantity-input-${matchingProduct.id}" data-product-id = "${matchingProduct.id}" type="number" min="1" value="${cart.quantity}"/>
           <span class="save-quantity-link link-primary save-link" data-product-id = "${matchingProduct.id}">Save</span>
 
           <span class="delete-quantity-link link-primary" data-product-id = "${matchingProduct.id}">
@@ -144,18 +145,22 @@ document.querySelectorAll(".save-link").forEach((saveLink) => {
   saveLink.addEventListener("click", () => {
 
     const productID = saveLink.dataset.productId;
-    const container = document.querySelector(`.js-cart-item-container-${productID}`);
-    container.classList.remove("is-editing-quantity");
-
-    const quantityInput = document.querySelector(`.quantity-input-${productID}`);
-    const newQuantity = Number(quantityInput.value);
-
-    const quantityLabel = document.querySelector(`.quantity-label-${productID}`);
-    quantityLabel.innerHTML = newQuantity;
-
-    updateQuantity(newQuantity, productID);
+    updateQuantity(productID);
     updateHeaderCartItems();
     updateSummary();
+  })
+});
+
+document.querySelectorAll(".quantity-input").forEach((input) => {
+  input.addEventListener("keypress", (e) => {
+
+    if (e.key === "Enter") {
+      const productID = input.dataset.productId;
+      updateQuantity(productID);
+      updateHeaderCartItems();
+      updateSummary();
+    }
+
   })
 });
 

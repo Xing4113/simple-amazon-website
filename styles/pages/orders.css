@@ -155,6 +155,25 @@
   width: 100%;
   font-size: 15px;
   padding: 8px;
+
+  margin-bottom: 10px;
+}
+
+.cancel-order-button {
+  background-color: rgba(233, 0, 0, 0.899);
+
+  font-weight: 700;
+  width: 100%;
+  font-size: 15px;
+  padding: 8px;
+}
+
+.cancel-order-button:hover {
+  background-color: rgba(208, 0, 0, 0.889);
+}
+
+.cancel-order-button:active {
+  background-color: rgba(233, 0, 0, 0.899);
 }
 
 @media (max-width: 800px) {
@@ -172,7 +191,16 @@
     margin-bottom: 30px;
   }
 
-  .track-package-button {
+  .cancel-order-button {
+    width: 140px;
+  }
+
+  .product-actions {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .track-link {
     width: 140px;
   }
 }
