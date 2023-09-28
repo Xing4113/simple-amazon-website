@@ -219,6 +219,10 @@
   display: none;
 }
 
+.is-editing-quantity .update-quantity-link {
+  display: none;
+}
+
 .is-editing-quantity .quantity-input {
   display: initial;
 }
@@ -228,9 +232,5 @@
 }
 
 .is-editing-quantity .quantity-label {
-  display: none;
-}
-
-.is-editing-quantity .update-quantity-link {
   display: none;
 }

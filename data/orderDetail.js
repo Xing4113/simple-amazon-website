@@ -1,7 +1,9 @@
 import { carts } from "./carts.js";
 import { getDate } from "../jsCode/utils/date.js";
 import { orderSummary } from "./orderSummary.js";
+import { formatPrice } from "../jsCode/utils/money.js";
 
+//order details database
 export let orderDetails = JSON.parse(localStorage.getItem("orderDetails"));
 
 if (!orderDetails) {
@@ -47,17 +49,12 @@ function saveToStorage() {
     localStorage.setItem("orderDetails", JSON.stringify(orderDetails));
 }
 
+//update the database after placed order
 export function updateOrderDetail() {
     let products = [];
 
     carts.forEach((cart) => {
-        products.push(
-            {
-                id: cart.productID,
-                arrivingDate: cart.deliveryDate,
-                quantity: cart.quantity
-            }
-        );
+        products.push(cart);
     });
 
     orderDetails.push({
@@ -70,6 +67,7 @@ export function updateOrderDetail() {
     saveToStorage();
 }
 
+//delete specified orderDetail if the orderDetails.products.length = 0
 function deleteOrderDetail(orderID) {
     let tempOrderDetails = [];
 
@@ -82,21 +80,26 @@ function deleteOrderDetail(orderID) {
     orderDetails = tempOrderDetails;
 }
 
+// cancel order
 export const cancelOrder = (orderID, productID) => {
 
     let tempProducts = [];
+    let totalAmount = 0;
 
     orderDetails.forEach((orderDetail) => {
         if (orderDetail.orderID === orderID) {
 
             orderDetail.products.forEach((product) => {
-                if (product.id !== productID) {
+                if (product.productID !== productID) {
                     tempProducts.push(product);
+                    totalAmount += product.subtotal;
                 }
             });
 
             orderDetail.products = tempProducts;
+            orderDetail.totalAmount = totalAmount;
             document.querySelector(`.js-${orderID}-${productID}`).remove();
+            document.querySelector(`.js-order-total-${orderID}`).innerHTML = `$${formatPrice(totalAmount)}`
 
             if (orderDetail.products.length === 0) {
                 deleteOrderDetail(orderID);
@@ -107,6 +110,5 @@ export const cancelOrder = (orderID, productID) => {
     });
 
     saveToStorage();
-
     alert("Order Canceled!!");
 }

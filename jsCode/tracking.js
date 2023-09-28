@@ -6,6 +6,7 @@ import { searchFunction } from "./utils/searchFunction.js";
 updateCartQuantity();
 searchFunction();
 
+// received the input text from URL
 const urlParams = new URLSearchParams(window.location.search);
 
 const orderID = urlParams.get("orderID");
@@ -16,7 +17,7 @@ let matchingOrder;
 orderDetails.forEach(orderDetail => {
   if (orderDetail.orderID === orderID) {
     orderDetail.products.forEach((product) => {
-      if (product.id === productID) {
+      if (product.productID === productID) {
         matchingOrder = product;
       }
     });
@@ -26,7 +27,7 @@ orderDetails.forEach(orderDetail => {
 let matchingItem;
 
 products.forEach((product) => {
-  if (product.id === matchingOrder.id) {
+  if (product.id === matchingOrder.productID) {
     matchingItem = product;
   }
 });

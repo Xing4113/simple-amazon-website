@@ -1,3 +1,5 @@
+
+// add search function
 export function searchFunction() {
 
     const inputText = document.querySelector(".js-search-bar");

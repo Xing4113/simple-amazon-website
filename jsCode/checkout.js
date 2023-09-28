@@ -1,15 +1,19 @@
 import { carts, deleteCart, updateHeaderCartItems, updateQuantity, updateShippingFee, updateDeliveryDate, cartUpToDate } from "../data/carts.js";
 import { products } from "../data/products.js";
-import { formatPrice } from "../jsCode/utils/money.js";
+import { formatPrice } from "./utils/money.js";
 import { updateSummary } from "../data/orderSummary.js"
 import { getDate } from "./utils/date.js";
 
 let htmlCreator = "";
 
+// update cart items in center-section-header
 updateHeaderCartItems();
+// update order's summary based on the carts
 updateSummary();
+// if the cart's item still there, it update the delivery date
 cartUpToDate();
 
+//show cart's items
 carts.forEach(cart => {
 
   let matchingProduct;
@@ -106,21 +110,25 @@ carts.forEach(cart => {
 
   `
 
+  //put back to the div class named "order-summary" inside the html
   document.querySelector(".order-summary").innerHTML = htmlCreator;
+  // update order's summary based on the carts
   updateSummary();
 });
 
 
 const deleteBtns = document.querySelectorAll(".delete-quantity-link");
-
+//to delete the specified cart
 deleteBtns.forEach(deleteBtn => {
   deleteBtn.addEventListener("click", () => {
 
     const productID = deleteBtn.dataset.productId;
     deleteCart(productID);
 
+    // remove the container without reload website
     const container = document.querySelector(`.js-cart-item-container-${productID}`);
     container.remove();
+
     updateHeaderCartItems();
     updateSummary();
   });
@@ -128,7 +136,8 @@ deleteBtns.forEach(deleteBtn => {
 
 
 
-
+// appear the quantity-input and save-link
+// disappear the update-quantity-link
 document.querySelectorAll(".update-quantity-link").forEach((updateLink) => {
 
   updateLink.addEventListener("click", () => {
@@ -136,11 +145,15 @@ document.querySelectorAll(".update-quantity-link").forEach((updateLink) => {
     const productID = updateLink.dataset.productId;
     const container = document.querySelector(`.js-cart-item-container-${productID}`);
 
+    // add class named "is-editing-quantity"
+    // update-quantity-link will disappear due to the css style in checkout.js
+    // .is-editing-quantity .update-quantity-link display: none; 
     container.classList.add("is-editing-quantity");
   });
 
 });
 
+// to save the new quantity that have keyed in
 document.querySelectorAll(".save-link").forEach((saveLink) => {
   saveLink.addEventListener("click", () => {
 
@@ -151,6 +164,7 @@ document.querySelectorAll(".save-link").forEach((saveLink) => {
   })
 });
 
+// allow to press "enter" to save the quantity that have keyed in
 document.querySelectorAll(".quantity-input").forEach((input) => {
   input.addEventListener("keypress", (e) => {
 

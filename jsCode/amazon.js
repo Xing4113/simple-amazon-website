@@ -3,14 +3,16 @@ import { addToCart, updateCartQuantity } from '../data/carts.js';
 import { formatPrice } from "../jsCode/utils/money.js";
 import { searchFunction } from "./utils/searchFunction.js";
 
-let htmlCreator = "";
+let productsGridContainer = "";
 
+// update the quantity of cart in right-section-header
 updateCartQuantity();
+// add search function 
 searchFunction();
 
 products.forEach(products => {
 
-    htmlCreator += `
+    productsGridContainer += `
         
             <div class="product-container">
             <div class="product-image-container">
@@ -56,21 +58,22 @@ products.forEach(products => {
             </div>
         `;
 
-    document.querySelector(".js-products-grid").innerHTML = htmlCreator;
+    document.querySelector(".js-products-grid").innerHTML = productsGridContainer;
 
 }
 );
 
-const addToCarts = document.querySelectorAll(".js-add-to-cart-btn");
-
-addToCarts.forEach(button => {
+// to add the selected quantity of specified item to cart
+document.querySelectorAll(".js-add-to-cart-btn").forEach(button => {
 
     button.addEventListener("click", () => {
 
+        //get the data from the specified element that have clicked
         const productID = button.dataset.productId;
         let quantity = document.querySelector(".js-quantity-selector-" + productID).value;
         quantity = Number(quantity);
 
+        //display icon
         addedIcon(productID);
         addToCart(productID, quantity);
         updateCartQuantity();
@@ -80,7 +83,9 @@ addToCarts.forEach(button => {
 
 function addedIcon(productID) {
     const addedToCart = document.querySelector(".js-added-to-cart-" + productID);
+    //set the specified icon appear
     addedToCart.style.opacity = 1;
+    //set the specified icon disappear after 2s
     setTimeout(() => addedToCart.style.opacity = 0, 2000);
 }
 

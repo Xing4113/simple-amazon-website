@@ -15,7 +15,7 @@ orderDetails.forEach((orderDetail) => {
 
     products.forEach((product) => {
         orderDetail.products.forEach((orderedProduct) => {
-            if (product.id === orderedProduct.id) {
+            if (product.id === orderedProduct.productID) {
                 productContainer += `
 
                  <div class="order-details-grid js-${orderDetail.orderID}-${product.id}">
@@ -29,20 +29,20 @@ orderDetails.forEach((orderDetail) => {
                         </div>
                         <div class="product-delivery-date">Arriving on: ${orderedProduct.arrivingDate}</div>
                         <div class="product-quantity">Quantity: ${orderedProduct.quantity}</div>
-                        <button class="buy-again-button button-primary" data-product-id = "${orderedProduct.id}" data-quantity="${orderedProduct.quantity}">
+                        <button class="buy-again-button button-primary" data-product-id = "${orderedProduct.productID}" data-quantity="${orderedProduct.quantity}">
                             <img class="buy-again-icon" src="images/icons/buy-again.png" />
                             <span class="buy-again-message">Buy it again</span>
                         </button>
                     </div>
 
                     <div class="product-actions">
-                        <a class="track-link" href="tracking.html?orderID=${orderDetail.orderID}&productID=${orderedProduct.id}">
+                        <a class="track-link" href="tracking.html?orderID=${orderDetail.orderID}&productID=${orderedProduct.productID}">
                             <button class="track-package-button button-secondary">
                                 Track package
                             </button>
                         </a>
                         
-                        <button class="cancel-order-button button-secondary" data-order-id="${orderDetail.orderID}" data-product-id = "${orderedProduct.id}">
+                        <button class="cancel-order-button button-secondary" data-order-id="${orderDetail.orderID}" data-product-id = "${orderedProduct.productID}">
                             Cancel Order
                         </button>
 
@@ -63,7 +63,7 @@ orderDetails.forEach((orderDetail) => {
                     </div>
                     <div class="order-total">
                         <div class="order-header-label">Total:</div>
-                        <div>$${formatPrice(orderDetail.totalAmount)}</div>
+                        <div class="js-order-total-${orderDetail.orderID}">$${formatPrice(orderDetail.totalAmount)}</div>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@ orderDetails.forEach((orderDetail) => {
     document.querySelector(".orders-grid").innerHTML = htmlCreator;
 });
 
-
+// add the purchased item to cart
 document.querySelectorAll(".buy-again-button").forEach((buyAgainBtn) => {
     buyAgainBtn.addEventListener("click", () => {
         const productID = buyAgainBtn.dataset.productId;
@@ -95,6 +95,7 @@ document.querySelectorAll(".buy-again-button").forEach((buyAgainBtn) => {
     });
 });
 
+// cancel the order
 document.querySelectorAll(".cancel-order-button").forEach((cancelOrderBtn) => {
     cancelOrderBtn.addEventListener("click", () => {
 
@@ -104,4 +105,3 @@ document.querySelectorAll(".cancel-order-button").forEach((cancelOrderBtn) => {
         cancelOrder(orderID, productID);
     });
 });
-

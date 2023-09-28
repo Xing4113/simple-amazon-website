@@ -5,6 +5,7 @@ import { searchFunction } from "./utils/searchFunction.js";
 
 let htmlCreator = "";
 
+// received the input text from URL
 const urlParams = new URLSearchParams(window.location.search);
 const inputText = urlParams.get("inputText").toUpperCase();
 
