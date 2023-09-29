@@ -94,9 +94,18 @@ export const updateQuantity = (productID) => {
     const quantityLabel = document.querySelector(`.quantity-label-${productID}`);
     quantityLabel.innerHTML = newQuantity;
 
+    let newSubtotal;
+    products.forEach((product) => {
+        if (product.id === productID) {
+            newSubtotal = product.priceCents * newQuantity;
+        }
+    });
+
     carts.forEach((cartItem) => {
         if (productID === cartItem.productID) {
+            newSubtotal += cartItem.shippingFee;
             cartItem.quantity = newQuantity;
+            cartItem.subtotal = newSubtotal;
         }
     });
 
@@ -109,8 +118,11 @@ export const updateQuantity = (productID) => {
 //update the shipping fee when clicked the input radio
 export const updateShippingFee = (productID, selectedFee) => {
     carts.forEach((cart) => {
+        let newSubtotal;
         if (cart.productID === productID) {
+            newSubtotal = cart.subtotal - cart.shippingFee;
             cart.shippingFee = selectedFee;
+            cart.subtotal = newSubtotal + cart.shippingFee;
         }
     });
 }

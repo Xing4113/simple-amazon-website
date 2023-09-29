@@ -27,7 +27,7 @@ orderDetails.forEach((orderDetail) => {
                         <div class="product-name">
                             ${product.name}
                         </div>
-                        <div class="product-delivery-date">Arriving on: ${orderedProduct.arrivingDate}</div>
+                        <div class="product-delivery-date">Arriving on: ${orderedProduct.deliveryDate}</div>
                         <div class="product-quantity">Quantity: ${orderedProduct.quantity}</div>
                         <button class="buy-again-button button-primary" data-product-id = "${orderedProduct.productID}" data-quantity="${orderedProduct.quantity}">
                             <img class="buy-again-icon" src="images/icons/buy-again.png" />
