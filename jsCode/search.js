@@ -11,6 +11,7 @@ const inputText = urlParams.get("inputText").toUpperCase();
 
 searchFunction();
 updateCartQuantity();
+let searchRecord = 0;
 
 products.forEach(product => {
 
@@ -18,6 +19,7 @@ products.forEach(product => {
 
     if (product.name.toUpperCase().includes(inputText)) {
         matchingItem = product;
+        searchRecord++;
     }
 
     if (matchingItem) {
@@ -70,7 +72,7 @@ products.forEach(product => {
 
     }
 
-
+    document.querySelector(".js-search-record").innerHTML = searchRecord;
 }
 );
 
